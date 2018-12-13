@@ -1,0 +1,15 @@
+<ion-list inline>
+  <ion-list-header>
+    <ion-label>Files</ion-label>
+  </ion-list-header>
+  
+  <ion-item *ngFor="let file of files; index as i; " (click)="playFile(i)">
+    <ion-icon slot="start"
+      color="medium"
+      [name]="file.complete ? 'play' : 'infinite'"></ion-icon>
+    <ion-label>{{file.file.name}}</ion-label>
+    <ion-label *ngIf="file.bpm">BPM: {{file.bpm.groups[0].tempo}}</ion-label>
+    <ion-label *ngIf="!file.bpm">Loading...</ion-label>
+  </ion-item>
+  
+</ion-list>

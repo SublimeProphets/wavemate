@@ -8,7 +8,7 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "app",
+      "prefix": "wm",
       "schematics": {},
       "architect": {
         "build": {
@@ -31,10 +31,13 @@
                 "input": "src/theme/variables.scss"
               },
               {
-                "input": "src/global.scss"
+                "input": "src/assets/styles/global.scss"
               }
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/waveform-data/dist/waveform-data.js",
+              "node_modules/waveform-data/dist/webaudio.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -179,10 +182,10 @@
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
-      "styleext": "scss"
+      "styleext": "less"
     },
     "@ionic/angular-toolkit:page": {
-      "styleext": "scss"
+      "styleext": "less"
     }
   }
 }

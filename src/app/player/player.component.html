@@ -1,6 +1,19 @@
-<p>
-  player works!
-  <audio #audioOption>
-    <source [src]="source" type="audio/mp3">
-</audio>
-</p>
+<audio #audioRef></audio>
+
+<section class="controls">
+  <button (click)="playOrPause()">Playpause</button>
+</section>
+{{ currentTime | number:"1.0-0" }}
+
+<div id="audio-visualizer"></div>
+<!-- <div id="waveform"></div> -->
+<div class="waveform">
+  <div *ngIf="!file.waveform">Waveform <ion-spinner></ion-spinner></div>
+  <wm-waveform [data]="audiobuffer"
+    *ngIf="file.waveform"></wm-waveform>
+</div>
+<div class="waveform">
+  <div *ngIf="!file.bpm">BPM <ion-spinner></ion-spinner></div>
+  <wm-peaks [data]="file.bpm"
+    *ngIf="file.bpm"></wm-peaks>
+</div>

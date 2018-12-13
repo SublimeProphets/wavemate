@@ -1,0 +1,36 @@
+<section class="uploadbar">
+  <div class="droparea"
+    (drop)="onDropFile($event)"
+    (dragover)="onDragOverFile($event)"
+    (dragleave)="onDragLeave($event)"
+    (change)="selectFile($event.target.files)"
+    [ngClass]="{overDropZone: overDropZone, fileDropped: fileDropped, initial: (!fileDropped && !overDropZone), wrongFormat: wrongFormat }">
+    <label *ngIf="!overDropZone">Drag files here</label>
+    <label *ngIf="overDropZone">Release the files</label>
+    <label *ngIf="wrongFormat">Oops! Wrong format!</label>
+    <label *ngIf="fileDropped">Thanks! Drop more if you like...</label>
+
+  </div>
+  <div>
+    <div><label>Select it</label>
+      <input type="file"
+        multiple
+        class="form-control-file"
+        (change)="setFile($event.target.files)">
+    </div>
+  </div>
+  <div>
+    <div><label>URL</label>
+      <input type="url"
+        (keyup.enter)="setFileUrl($event.target.value)"
+        value="https://sample-videos.com/audio/mp3/wave.mp3">
+    </div>
+  </div>
+</section>
+
+
+
+
+<audio #dom_audio
+  (canplaythrough)="setDuration($event)"
+  id="audio"></audio>
