@@ -67,11 +67,13 @@ export class ThemeService {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private storage: Storage
-  ) { 
-    storage.get('theme').then(cssText => {  // <--- GET SAVED THEME
-      this.setGlobalCSS(cssText);
-    });
-  }
+  ) {}
+
+    public getTheme() {
+      this.storage.get('theme').then(cssText => {  // <--- GET SAVED THEME
+        this.setGlobalCSS(cssText);
+      });
+    }
 
   private contrast(color, ratio = 0.8) {
     color = Color(color);
@@ -168,6 +170,9 @@ export class ThemeService {
   public changeTheme(themename: string) {
     if(this.availableThemes.hasOwnProperty(themename)) {
       this.setTheme(this.availableThemes[themename]);
+    } else {
+      // fallback default
+      this.setTheme({});
     }
   }
   

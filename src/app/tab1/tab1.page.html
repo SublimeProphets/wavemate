@@ -15,12 +15,9 @@
         <wm-uploader></wm-uploader>
       </ion-card-content>
     </ion-card>
-    <ion-card *ngIf="file">
-      <ion-card-header>
-        <ion-card-title>Track {{ file }}</ion-card-title>
-      </ion-card-header>
+    <ion-card>
       <ion-card-content>
-        <wm-player [file]="file"></wm-player>
+        <wm-player></wm-player>
       </ion-card-content>
     </ion-card>
     <wm-files-list></wm-files-list>

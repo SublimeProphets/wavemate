@@ -12,7 +12,9 @@ export class UploaderComponent implements OnInit {
   public overDropZone: boolean = false;
   public fileDropped: boolean = false;
   public wrongFormat: boolean = false;
-  constructor(private dataService: DataService) { }
+  constructor(
+    private dataService: DataService
+    ) { }
 
   ngOnInit() {
   }
@@ -72,8 +74,8 @@ export class UploaderComponent implements OnInit {
         this.wrongFormat = true;
       }
     }
-    console.log("before startQueue");
-    this.dataService.startQueue();
+    console.log("before startProcessing");
+    this.dataService.startProcessing();
   }
   public setFileUrl(url: string) {
     if (url.match(/\.(avi|mp3|mp4|mpeg|ogg)$/i)) {
@@ -91,7 +93,8 @@ export class UploaderComponent implements OnInit {
           // Here, I use it to make an image appear on the page
           // let objectURL = URL.createObjectURL(blob);
           this.dataService.addFile(file);
-          this.dataService.startQueue();
+          this.dataService.startProcessing();
+
         });
     }
   }

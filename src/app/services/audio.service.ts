@@ -52,7 +52,9 @@ export class AudioService {
           console.error(err);
           reject(err);
         }
-        resolve(waveform);
+        // for now we only need one part of the whole result
+        const neededData = new Int8Array(waveform.adapter.data.buffer);
+        resolve(neededData);
       });
     });
   }
@@ -116,10 +118,8 @@ export class AudioService {
    * does all the analyzing stuff in one call.
    * @param file like File
    */
-  public getBuffer(file: File): Promise<ArrayBuffer> {
+  public getBuffer(objectURL: any): Promise<ArrayBuffer> {
     return new Promise((resolve, reject) => {
-      const objectURL = URL.createObjectURL(file);
-      
       this.http.get(objectURL, {
         responseType: "arraybuffer"
       }).subscribe((buffer) => {

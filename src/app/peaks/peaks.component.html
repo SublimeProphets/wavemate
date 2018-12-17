@@ -1,2 +1,11 @@
+<div class="empty"
+  *ngIf="data === false">
+  no PEAKS loaded yet...
+</div>
+
+<div class="loading"
+  *ngIf="data === null">
+  <ion-spinner></ion-spinner>
+</div>
 <svg #svg></svg>
 <ng-content></ng-content>

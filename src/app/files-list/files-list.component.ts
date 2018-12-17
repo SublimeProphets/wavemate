@@ -20,7 +20,7 @@ export class FilesListComponent implements OnInit {
   }
 
   public playFile(index) {
-    this.playerService.playAudio$.next(index);
+    this.playerService.loadAudio$.next(this.dataService.files[index]);
   }
 
 }

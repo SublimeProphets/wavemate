@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 // services
 import { PlayerService } from "./services/player.service";
 import { UtilService } from "./services/util.service";
+// import { SettingsComponent } from './settings/settings.component';
 // import { FilesListComponent } from './files-list/files-list.component';
 // import { PeaksComponent } from './peaks/peaks.component';
 // import { ThemeSwitchComponent } from './theme-switch/theme-switch.component';

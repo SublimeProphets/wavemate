@@ -9,3 +9,23 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+
+
+.empty {
+  background: grey;
+  text-align: center;
+  border-radius: 4px;
+  color: white;
+  transition: .5s all;
+  height: 100%;
+}
+
+.loading {
+  background: #ff9;
+  text-align: center;
+  border-radius: 4px;
+  color: black;
+  transition: .5s all;
+  height: 100%;
+}

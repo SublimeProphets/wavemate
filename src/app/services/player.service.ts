@@ -12,10 +12,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class PlayerService {
   private queuedFiles: File[] = [];
-  // private isAnalyzing: boolean = false;
+  
   // Observables
-  public playAudio$: Subject<number> = new Subject<number>();
-  public analyzingFinished$: Subject<IAnalyzedAudio> = new Subject<IAnalyzedAudio>();
+  public loadAudio$: Subject<IAnalyzedAudio> = new Subject<IAnalyzedAudio>();
+  public pauseAudio$: Subject<IAnalyzedAudio> = new Subject<IAnalyzedAudio>();
+  public playAudio$: Subject<IAnalyzedAudio> = new Subject<IAnalyzedAudio>();
 
   constructor(private sanitizer: DomSanitizer,
     private utilService: UtilService,

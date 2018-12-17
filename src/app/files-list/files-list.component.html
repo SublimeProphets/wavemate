@@ -1,6 +1,7 @@
 <ion-list inline>
   <ion-list-header>
-    <ion-label>Files</ion-label>
+    <ion-label>Files <button (click)="dataService.startProcessing(true)">Start</button>
+      <button (click)="dataService.stopProcessing()">Stop </button></ion-label>
   </ion-list-header>
   
   <ion-item *ngFor="let file of files; index as i; " (click)="playFile(i)">

@@ -21,10 +21,6 @@ export class Tab1Page implements OnInit {
   ) { }
   ngOnInit() {
 
-    // listen to playAudio
-    this.subscriptionCollection.push(this.playerService.playAudio$.subscribe((index) => {
-      this.file = this.dataService.files[index];
-      console.log(index);
-    }));
+  
   }
 }

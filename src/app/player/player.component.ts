@@ -1,9 +1,11 @@
+import { ProcessingSteps } from "./../interfaces/audio.interface";
+import { DataService } from "./../services/data.service";
 import { UtilService } from "./../services/util.service";
 import { AudioAPIWrapper } from "./../3rd/audio-api-wrapper";
 import { PlayerService } from "../services/player.service";
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, Input, ElementRef, OnChanges } from '@angular/core';
 import { Subscription, Subject } from "rxjs";
-import { IAnalyzedAudio } from "../interfaces/audio.interface";
+import { IAnalyzedAudio, IProcessingEvent } from "../interfaces/audio.interface";
 import * as d3 from "d3";
 import * as WaveformData from "waveform-data";
 
@@ -13,13 +15,20 @@ declare var webkitAudioContext: any;
 @Component({
   selector: 'wm-player',
   templateUrl: './player.component.html',
-  styleUrls: ['./player.component.scss']
+  styleUrls: ['./player.component.less']
 })
 export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
   // public
   @ViewChild("audioRef") private audioRef: any;
-  @Input("file") public file: IAnalyzedAudio;
-  public audiobuffer: any;
+  public file: IAnalyzedAudio = {
+    file: undefined,
+    objectURL: false,
+    waveform: false,
+    bpm: false,
+    tags: false,
+    complete: false
+  };
+  public waveform: any;
   public currentTime: any = "n/a";
   public finished: boolean = false;
 
@@ -37,29 +46,73 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private playerService: PlayerService,
     private utilService: UtilService,
+    private dataService: DataService,
     private element: ElementRef
   ) { }
   // constructor() { }
 
   ngOnInit() {
+
+
     this.configurePlayer();
 
-    // this keeps the player updated if initialized without all anaylzed data
-    this.subscriptionCollection.push(this.playerService.analyzingFinished$.subscribe((update: IAnalyzedAudio) => {
-      if (this.file.file === update.file) {
-        this.file = update;
+    // // everything already done?
+    // if(this.file && this.file.hasOwnProperty("complete") && this.file.complete) {
+    //   console.log("all initialized!!")
+    //   this.playAudio();
+    //   this.waveform = new Int8Array(this.file.waveform.adapter.data.buffer);
+    //   this.Visualize();
+    // } 
+
+    this.subscriptionCollection.push(this.playerService.loadAudio$.subscribe((item) => {
+      this.file = item;
+
+      if (this.file.complete) {
+        this.initializeAll();
+      }
+
+      console.log("got loadAudio$", this.file);
+    }));
+
+    this.subscriptionCollection.push(this.playerService.pauseAudio$.subscribe((item) => {
+      this.pauseAudio();
+    }));
+
+    // listen to playAudio
+    this.subscriptionCollection.push(this.playerService.playAudio$.subscribe((item) => {
+      if (this.file.file === item.file) {
         this.playAudio();
-        this.Visualize();
-        console.log(this.file);
-        if (this.file.waveform !== null && this.file.waveform.hasOwnProperty("adapter")) {
-          this.audiobuffer = new Int8Array(this.file.waveform.adapter.data.buffer);
-        } 
-        
+      }
+    }));
+
+    // this keeps the player updated if initialized without all anaylzed data
+    this.subscriptionCollection.push(this.dataService.processingItemStep$.subscribe((event: IProcessingEvent) => {
+      // todo better check if same? could be performanter i guess but not checked
+      if (!this.file.complete && this.file.file === event.payload.file) {
+        console.log("got processingEvent FOR MY FILE!", event);
+        switch (event.type) {
+          case ProcessingSteps.URL_CREATED:
+            this.file.objectURL = event.payload.objectURL;
+            this.initAudio();
+            if (this.utilService.settings.upload.playAfter.value) { this.playAudio(); }
+            this.Visualize();
+            break;
+          case ProcessingSteps.WAVEFORM_CREATED:
+            this.file.waveform = event.payload.waveform;
+            break;
+          case ProcessingSteps.BPM_CREATED:
+            this.file.bpm = event.payload.bpm
+            break;
+          case ProcessingSteps.TAGS_CREATED:
+            this.file.tags = event.payload.tags;
+            break;
+        }
       }
     }));
   }
 
   ngOnChanges() {
+    console.log("ngOnChanges");
     this.configurePlayer();
     this.playAudio();
   }
@@ -73,6 +126,12 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
   }
+
+  private initializeAll() {
+    this.initAudio();
+    this.Visualize();
+  }
+
 
   /**
    * does all the initial settings for the player
@@ -124,11 +183,18 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
    * called by subscription onto playerService.playAudio$
    * @param uploadedFile like IUploadedFile 
    */
-  private async playAudio() {
-    this.configurePlayer();
+  private initAudio() {
     this._audio.pause();
     this._audio.src = this.file.objectURL;
     this._audio.load();
+  }
+
+  private playAudio() {
+    this._audio.play();
+  }
+
+  private pauseAudio() {
+    this._audio.pause();
   }
 
   // private drawWaveform(raw_data) {

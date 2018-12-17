@@ -6,14 +6,9 @@
 {{ currentTime | number:"1.0-0" }}
 
 <div id="audio-visualizer"></div>
-<!-- <div id="waveform"></div> -->
 <div class="waveform">
-  <div *ngIf="!file.waveform">Waveform <ion-spinner></ion-spinner></div>
-  <wm-waveform [data]="audiobuffer"
-    *ngIf="file.waveform"></wm-waveform>
+  <wm-waveform [data]="file.waveform"></wm-waveform>
 </div>
 <div class="waveform">
-  <div *ngIf="!file.bpm">BPM <ion-spinner></ion-spinner></div>
-  <wm-peaks [data]="file.bpm"
-    *ngIf="file.bpm"></wm-peaks>
+  <wm-peaks [data]="file.bpm"></wm-peaks>
 </div>
