@@ -1,14 +1,20 @@
+<div *ngIf="file.tags">
+    <span class="title"><b>{{ file.tags.tags.title }}</b> - {{ file.tags.tags.artist }}</span>
+    <span class="sub"><ion-icon name="disc"></ion-icon> {{ (file.tags.tags.album) ? file.tags.tags.album : ("TDI.UNKNOWN" | translate ) }} </span>
+    <span class="sub"><ion-icon name="calendar"></ion-icon> {{ (file.tags.tags.year) ? file.tags.tags.year : "????" }} </span>
+</div>
+
 <audio #audioRef></audio>
 
 <section class="controls">
-  <button (click)="playOrPause()">Playpause</button>
+    <button (click)="playOrPause()">Playpause</button>
 </section>
 {{ currentTime | number:"1.0-0" }}
 
 <div id="audio-visualizer"></div>
 <div class="waveform">
-  <wm-waveform [data]="file.waveform"></wm-waveform>
+    <wm-waveform [data]="file.waveform"></wm-waveform>
 </div>
 <div class="waveform">
-  <wm-peaks [data]="file.bpm"></wm-peaks>
+    <wm-peaks [data]="file.bpm"></wm-peaks>
 </div>

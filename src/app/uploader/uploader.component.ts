@@ -14,7 +14,7 @@ export class UploaderComponent implements OnInit {
   public wrongFormat: boolean = false;
   constructor(
     private dataService: DataService
-    ) { }
+  ) { }
 
   ngOnInit() {
   }
@@ -54,10 +54,9 @@ export class UploaderComponent implements OnInit {
 
 
   setFile(files: any) {
-    console.log(files);
+    this.dataService.resetRecentlyUploaded();
     const add = (element) => {
       if (element.name.match(/\.(avi|mp3|mp4|mpeg|ogg)$/i)) {
-        console.log("queueAudio", element);
         this.dataService.addFile(element);
       } else {
         this.wrongFormat = true;
@@ -74,27 +73,20 @@ export class UploaderComponent implements OnInit {
         this.wrongFormat = true;
       }
     }
-    console.log("before startProcessing");
     this.dataService.startProcessing();
   }
   public setFileUrl(url: string) {
+    console.log(url);
     if (url.match(/\.(avi|mp3|mp4|mpeg|ogg)$/i)) {
       fetch(url, {
         mode: "cors"
       })
         .then(res => res.blob()) // Gets the response and returns it as a blob
         .then(blob => {
-          // Here's where you get access to the blob
-          // And you can use it for whatever you want
-          // Like calling ref().put(blob)
-
-          const file = new File([blob], "name")
-          console.log(file);
-          // Here, I use it to make an image appear on the page
-          // let objectURL = URL.createObjectURL(blob);
+          const file = new File([blob], "name");
+          this.dataService.resetRecentlyUploaded();
           this.dataService.addFile(file);
           this.dataService.startProcessing();
-
         });
     }
   }

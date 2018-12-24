@@ -2,22 +2,42 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 1em;
   >* {
     position: relative;
-    width: 15%;
-    height: 20%;
+    cursor: pointer;
+    padding: 1em;
+    margin-bottom: 1em;
+    height: 5vh;
+    min-height: 44px;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 0 1 auto;
-    border-radius: 50%;
-    border: 2px solid var(--ion-color-secondary);
+    flex: 0 0 calc(50% - .5em);
+    width: calc(50% - .5em);
+    border-radius: 4px;
+    // border: 2px solid var(--ion-color-secondary);
+    transition: opacity .25s ease-in-out;
+    background: lightgray;
+    opacity: 0.85;
+    &:hover {
+      opacity: 1;
+      transition: opacity .25s ease-in-out;
+    }
+    &.full {
+      flex: 0 1  100%;
+      width: 100%;
+    }
+    &:last-of-type {
+      margin-left: 1em;
+    }
     > * {
       flex: 1 1 auto;
       text-align: center;
     }
     label {
-      font-size: 2em;
+      font-size: 1.5em;
       display: block;
     }
     /* make square */
@@ -25,6 +45,13 @@
       content: '';
       float: left;
       padding-top: 100%;
+    }
+    input {
+      background: whites;
+      border: 0px;
+      border-radius: 4px;
+      padding: 0.25em;
+      width: 100%;
     }
   }
 }

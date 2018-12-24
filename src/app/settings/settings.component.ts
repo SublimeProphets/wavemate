@@ -17,7 +17,6 @@ export class SettingsComponent implements OnInit {
 
   private processSettings() {
     for(let key in this.utilService.settings) {
-      console.log(key);
       const settingsBlock = this.utilService.settings[key];
 
       const result = {
@@ -34,7 +33,6 @@ export class SettingsComponent implements OnInit {
           result.items.push(setting)
         }
       }
-      console.log(result);
       this.settings.push(result);
     }
   }

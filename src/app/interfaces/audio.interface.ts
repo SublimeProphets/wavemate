@@ -4,7 +4,10 @@ export interface IAnalyzedAudio {
   objectURL: any;
   bpm: any;
   tags: any;
+  picture: any;
   complete: boolean;
+  recentlyUploaded?: boolean;
+  uploadTimeStamp?: number;
 }
 
 export interface IProcessingEvent {

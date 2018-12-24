@@ -26,7 +26,9 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
     waveform: false,
     bpm: false,
     tags: false,
-    complete: false
+    picture: false,
+    complete: false,
+    uploadTimeStamp: 0
   };
   public waveform: any;
   public currentTime: any = "n/a";
@@ -55,23 +57,11 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
 
 
     this.configurePlayer();
-
-    // // everything already done?
-    // if(this.file && this.file.hasOwnProperty("complete") && this.file.complete) {
-    //   console.log("all initialized!!")
-    //   this.playAudio();
-    //   this.waveform = new Int8Array(this.file.waveform.adapter.data.buffer);
-    //   this.Visualize();
-    // } 
-
     this.subscriptionCollection.push(this.playerService.loadAudio$.subscribe((item) => {
       this.file = item;
-
       if (this.file.complete) {
         this.initializeAll();
       }
-
-      console.log("got loadAudio$", this.file);
     }));
 
     this.subscriptionCollection.push(this.playerService.pauseAudio$.subscribe((item) => {
@@ -89,7 +79,6 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
     this.subscriptionCollection.push(this.dataService.processingItemStep$.subscribe((event: IProcessingEvent) => {
       // todo better check if same? could be performanter i guess but not checked
       if (!this.file.complete && this.file.file === event.payload.file) {
-        console.log("got processingEvent FOR MY FILE!", event);
         switch (event.type) {
           case ProcessingSteps.URL_CREATED:
             this.file.objectURL = event.payload.objectURL;
@@ -112,7 +101,6 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges() {
-    console.log("ngOnChanges");
     this.configurePlayer();
     this.playAudio();
   }
@@ -159,7 +147,7 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
 
     // this.audioRef.autoplay = true;
     this._audio.addEventListener("progress", () => {
-      console.log("audio in progress");
+      // console.log("audio in progress");
     });
     this._audio.addEventListener("timeupdate", () => {
       this.currentTime = this._audio.currentTime;
@@ -237,7 +225,6 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
     function createSvg(parent, height, width) {
       return d3.select(parent).append('svg').attr('height', height).attr('width', width);
     }
-    console.log(self);
     if (!self._svg) {
       // TODO DO this better
 

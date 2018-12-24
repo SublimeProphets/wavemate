@@ -1,3 +1,24 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+    <ion-split-pane contentId="menu-content" when="lg">
+        <!--  our side menu  -->
+        <ion-menu contentId="menu-content">
+            <ion-router-outlet></ion-router-outlet>
+
+        </ion-menu>
+        <div id="menu-content" main>
+            <!-- the main content -->
+            <ion-header>
+                <ion-toolbar>
+                    <ion-title>Files</ion-title>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <wm-files-list></wm-files-list>
+            </ion-content>
+        </div>
+    </ion-split-pane>
+    <!-- <ion-router-outlet></ion-router-outlet> -->
 </ion-app>

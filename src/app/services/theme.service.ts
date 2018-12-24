@@ -180,7 +180,6 @@ export class ThemeService {
   private setTheme(theme) {
     const cssText = this.CSSTextGenerator(theme);
     this.setGlobalCSS(cssText);
-    console.log(cssText);
     this.storage.set('theme', cssText);
   }
 

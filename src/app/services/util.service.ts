@@ -21,6 +21,9 @@ export class UtilService {
         label: "Play file after upload",
         value: true
       }
+    },
+    processing: {
+      delayBetweenFiles: 2000
     }
   }
 

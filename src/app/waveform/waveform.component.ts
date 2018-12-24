@@ -54,17 +54,15 @@ export class WaveformComponent implements OnInit, OnChanges {
   }
 
   private renderSVG() {
-    console.log("HERE", this.data);
     if (this.data && !this.rendered) {
       this.rendered = true;
       var summary = this.summarizeFaster(this.data, 600);
       var multiplier = 1;
       var w = 100 / 600;
-      console.log(summary);
       d3.select(this.element.nativeElement)
         .append('svg')
         .attr('width', "100%")
-        .attr('height', 100)
+        .attr('height', "100%")
         .selectAll('circle')
         .data(summary)
         .enter()

@@ -1,24 +1,19 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      <wm-theme-switch></wm-theme-switch>
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            Analyzer
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-card class="welcome-card">
-      <ion-card-header>
-        <ion-card-title>Uploader</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <wm-uploader></wm-uploader>
-      </ion-card-content>
-    </ion-card>
+
     <ion-card>
-      <ion-card-content>
-        <wm-player></wm-player>
-      </ion-card-content>
+        <ion-card-content>
+            <wm-player></wm-player>
+        </ion-card-content>
     </ion-card>
-    <wm-files-list></wm-files-list>
 </ion-content>

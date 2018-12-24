@@ -82,34 +82,35 @@ export class AudioService {
    * does all the analyzing stuff in one call.
    * @param file like File
    */
-  public analyzeAll(file: File): Promise<IAnalyzedAudio> {
-    return new Promise((resolve, reject) => {
-      const objectURL = URL.createObjectURL(file);
+  // public analyzeAll(file: File): Promise<IAnalyzedAudio> {
+  //   return new Promise((resolve, reject) => {
+  //     const objectURL = URL.createObjectURL(file);
       
-      this.http.get(objectURL, {
-        responseType: "arraybuffer"
-      }).subscribe(async (buffer) => {
-        const wf = await this.createWaveformFromBuffer(buffer);
+  //     this.http.get(objectURL, {
+  //       responseType: "arraybuffer"
+  //     }).subscribe(async (buffer) => {
+  //       const wf = await this.createWaveformFromBuffer(buffer);
         
-        const bpm = await this.createBPMFromBuffer(buffer);
-        const tags = await this.getMediaTags(file);  
+  //       const bpm = await this.createBPMFromBuffer(buffer);
+  //       const tags = await this.getMediaTags(file);  
 
-        const finalData: IAnalyzedAudio = {
-          file: file,
-          objectURL: objectURL,
-          waveform: wf,
-          bpm: bpm,
-          tags: tags,
-          complete: true
-        }
-        resolve(finalData);
-      },
-        (err) => {
-          console.error(err);
-          reject(err);
-        })
-    });
-  }
+  //       const finalData: IAnalyzedAudio = {
+  //         file: file,
+  //         objectURL: objectURL,
+  //         waveform: wf,
+  //         bpm: bpm,
+  //         tags: tags,
+  //         picture: null,
+  //         complete: true
+  //       }
+  //       resolve(finalData);
+  //     },
+  //       (err) => {
+  //         console.error(err);
+  //         reject(err);
+  //       })
+  //   });
+  // }
 
 
 
@@ -245,7 +246,6 @@ export class AudioService {
       request.open('GET', objectURL, true);
       request.responseType = 'arraybuffer';
       request.onload = () => {
-        console.log(request.response);
         // Create offline context
         var OfflineContext = OfflineAudioContext;
         var offlineContext = new OfflineContext(2, 30 * 44100, 44100);

@@ -1,18 +1,16 @@
 <ion-list>
-  <ng-template ngFor
-    let-settingBlock
-    [ngForOf]="settings">
-    <ion-list-header>
-      <ion-label>
-        <ion-icon color="medium"
-          [name]="settingBlock.icon"></ion-icon> {{ settingBlock.label }}
-      </ion-label>
-    </ion-list-header>
-    <ion-item *ngFor="let setting of settingBlock.items">
-      <ion-label>{{ setting.label }}</ion-label>
-      <ion-toggle secondary
-        [ngModel]='setting.value'
-        (ionChange)='changeSetting($event, settingBlock, setting)'></ion-toggle>
-    </ion-item>
-  </ng-template>
+    <ng-template ngFor let-settingBlock [ngForOf]="settings">
+        <ion-list-header>
+            <ion-label>
+                <ion-icon color="medium" [name]="settingBlock.icon"></ion-icon> {{ settingBlock.label }}
+            </ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let setting of settingBlock.items">
+            <ion-label>{{ setting.label }}</ion-label>
+            <ion-toggle secondary [ngModel]='setting.value' (ionChange)='changeSetting($event, settingBlock, setting)'></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <wm-theme-switch></wm-theme-switch>
+        </ion-item>
+    </ng-template>
 </ion-list>

@@ -1,0 +1,19 @@
+{
+    "PLAYER": {
+        "PLAY": "Play",
+        "PAUSE": "Pause"
+    },
+    "UPLOADER": {
+        "DROPZONE": {
+            "EMPTY": "<b>Drop files</b> or <b>click to select</>",
+            "RECEIVED": "Thanks for dropping {{item}} files"
+        }
+    },
+    "LIST": {
+        "SORT": {
+            "RECENTLY_UPDATED": "Last Uploads first",
+            "FILENAME": "Filenames ascending"
+        }
+
+    }
+}
