@@ -1,5 +1,8 @@
-import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, ElementRef, HostListener, Output, EventEmitter, HostBinding } from '@angular/core';
 import * as d3 from "d3";
+import { TweenMax, Power2, Back } from "gsap/TweenMax";
+
+
 
 @Component({
   selector: 'wm-waveform',
@@ -8,9 +11,13 @@ import * as d3 from "d3";
 })
 export class WaveformComponent implements OnInit, OnChanges {
   @Input("data") public data: any;
+  @Input() public resolution: number = 1;
+  @Input() public currentTime: number = 0;
+  @Output() public onClick: EventEmitter<number> = new EventEmitter<number>();
   @ViewChild("canvas") canvas: any;
   public rendered = false;
-
+  public indicatorPos:number = 0;
+  @HostBinding("class.showIndicator") public showIndicator: boolean = false;
 
   constructor(private element: ElementRef) { }
 
@@ -27,7 +34,7 @@ export class WaveformComponent implements OnInit, OnChanges {
     var vals = [];
 
     // Define a minimum sample size per pixel
-    var maxSampleSize = 1000;
+    var maxSampleSize = 1000 * this.resolution;
     var sampleSize = Math.min(pixelLength, maxSampleSize);
 
 
@@ -55,10 +62,12 @@ export class WaveformComponent implements OnInit, OnChanges {
 
   private renderSVG() {
     if (this.data && !this.rendered) {
+      const componentWidth = this.element.nativeElement.offsetWidth * this.resolution;
+      const componentHeight = this.element.nativeElement.offsetWidth * this.resolution;
       this.rendered = true;
-      var summary = this.summarizeFaster(this.data, 600);
+      var summary = this.summarizeFaster(this.data, componentWidth);
       var multiplier = 1;
-      var w = 100 / 600;
+      var w = 100 / componentWidth;
       d3.select(this.element.nativeElement)
         .append('svg')
         .attr('width', "100%")
@@ -75,12 +84,32 @@ export class WaveformComponent implements OnInit, OnChanges {
         })
         .attr('width', w + "%")
         .attr('height', function (d) {
-          return (isNaN(multiplier * (d[1] - d[0]))) ? 0 : multiplier * (d[1] - d[0]);
-      });
+          return ((isNaN(multiplier * (d[1] - d[0]))) ? 0 : multiplier * (d[1] - d[0])) + "%";
+        });
     } else if ((!this.data || this.data === null) && this.rendered) {
       // remove old stuff
       d3.select(this.element.nativeElement).selectAll("svg").remove();
       this.rendered = false;
     }
+  }
+  
+  @HostListener('mousemove', ['$event'])
+  onMouseMove(e) {
+    if (e.layerX > 2) { this.indicatorPos = e.layerX; }
+    console.log(this.indicatorPos);
+  }
+
+  @HostListener('mouseover', ['$event'])
+  onMouseOver(e) {
+    this.showIndicator = true;
+  }
+  @HostListener('mouseout', ['$event'])
+  onMouseOut(e) {
+    this.showIndicator = false;
+  }
+  @HostListener('click', ['$event'])
+  onClickFn(e) {
+    console.log(e.layerX);
+    this.onClick.emit(100 / this.element.nativeElement.offsetWidth * this.indicatorPos);
   }
 }

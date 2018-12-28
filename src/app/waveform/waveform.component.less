@@ -2,4 +2,35 @@
   display: block;
   width: 100%;
   height: 100%;
+  position: relative;
+}
+
+.indicator,
+.currentTime {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+.indicator  { 
+  left: -2px;
+  width: 2px;
+  background: white;
+  height: 100%;
+  z-index: 11;
+  opacity: 0;
+  transition: all .2 ease-in-out;
+}
+:host.showIndicator .indicator {
+  opacity: 1;
+  transition: all .2 ease-in-out;
+}
+.currentTime {
+  position: absolute;
+  top: 0;
+  left: 00%;
+  width: 0;
+  background: linear-gradient(to left, rgba(255,255,255,0.6), rgba(255,255,255,0.3));
+  height: 100%;
+  z-index: 10;
+  transition: width .5s ease-out;
 }

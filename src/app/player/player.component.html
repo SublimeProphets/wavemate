@@ -13,7 +13,7 @@
 
 <div id="audio-visualizer"></div>
 <div class="waveform">
-    <wm-waveform [data]="file.waveform"></wm-waveform>
+    <wm-waveform [data]="file.waveform" (onClick)="setCurrentTime($event)" [currentTime]="currentTimePercentage"></wm-waveform>
 </div>
 <div class="waveform">
     <wm-peaks [data]="file.bpm"></wm-peaks>

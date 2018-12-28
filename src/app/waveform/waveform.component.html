@@ -7,3 +7,5 @@
 <div class="loading" *ngIf="data === null">
     <ion-spinner></ion-spinner>
 </div>
+<div class="indicator" [ngStyle]="{left: indicatorPos + 'px'}"></div>
+<div class="currentTime" [ngStyle]="{width: currentTime + '%'}"></div>

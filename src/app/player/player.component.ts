@@ -32,6 +32,7 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
   };
   public waveform: any;
   public currentTime: any = "n/a";
+  public currentTimePercentage: number = 0;
   public finished: boolean = false;
 
   public durationChange$: Subject<any> = new Subject();
@@ -100,6 +101,15 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
     }));
   }
 
+  public setCurrentTime(newTime: number) {
+    console.log(newTime);
+    this.audioRef.nativeElement.pause();
+    if(this.audioRef) this.audioRef.nativeElement.currentTime = Math.round(this.audioRef.nativeElement.duration / 100 * newTime);
+    this.audioRef.nativeElement.play();
+    this.currentTime = this.audioRef.nativeElement.currentTime;
+    this.currentTimePercentage = 100 /  this._audio.duration * this.currentTime;
+  }
+
   ngOnChanges() {
     this.configurePlayer();
     this.playAudio();
@@ -151,6 +161,7 @@ export class PlayerComponent implements OnInit, OnDestroy, OnChanges {
     });
     this._audio.addEventListener("timeupdate", () => {
       this.currentTime = this._audio.currentTime;
+      this.currentTimePercentage = 100 /  this._audio.duration * this.currentTime;
       this.durationChange$.next(this._audio);
     });
 

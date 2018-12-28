@@ -3,6 +3,7 @@ import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // ionic
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -29,6 +30,7 @@ import { UploaderComponent } from "./uploader/uploader.component";
 import { WaveformComponent } from "./waveform/waveform.component";
 import { ArraySortPipe } from "./pipes/sort.pipe";
 import { FilterPipe } from "./pipes/filter.pipe";
+import { FilesItemComponent } from './files-item/files-item.component';
 // import { PeaksComponent } from './peaks/peaks.component';
 // import { ThemeSwitchComponent } from './theme-switch/theme-switch.component';
 
@@ -65,11 +67,13 @@ export class SharedModule { }
   declarations: [
     AppComponent,
     FilesListComponent,
+    FilesItemComponent,
     UploaderComponent
   ],
   entryComponents: [],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     AppRoutingModule,

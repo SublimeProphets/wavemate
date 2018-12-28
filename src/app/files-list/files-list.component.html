@@ -1,63 +1,45 @@
-<wm-uploader></wm-uploader>
-<!-- <ion-select >
+<!-- the main content -->
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Files</ion-title>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-icon name="refresh" (click)="dataService.resetFiles()"></ion-icon>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+
+
+    <wm-uploader></wm-uploader>
+    <!-- <ion-select >
     <ion-option value="f">Female</ion-option>
     <ion-option value="m">Male</ion-option>
 </ion-select> -->
-<button (click)="dataService.startProcessing(true)">Start</button>
-<button (click)="dataService.stopProcessing()">Stop </button>
-<ion-list lines="none">
-    <ion-list-header>
-        <ion-item>
-            <ion-label>Sort Method</ion-label>
-            <ion-select (ionChange)="sort($event.target.value)" [value]="sortMethods[currentSortMethod].label" [placeholder]="sortMethods[currentSortMethod].label | translate">
-                <ion-select-option *ngFor="let method of sortMethods; index as sortIndex" [value]="sortIndex">{{method.label | translate}}</ion-select-option>
-            </ion-select>
-        </ion-item>
-    </ion-list-header>
+    <ion-icon name="refresh"></ion-icon>
+    <ion-list lines="none">
+        <ion-list-header>
+            <ion-item>
+                <ion-label>Sort Method</ion-label>
+                <ion-select (ionChange)="sort($event.target.value)" [value]="sortMethods[currentSortMethod].label" [placeholder]="sortMethods[currentSortMethod].label | translate">
+                    <ion-select-option *ngFor="let method of sortMethods; index as sortIndex" [value]="sortIndex">{{method.label | translate}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+        </ion-list-header>
 
-    <ion-item-sliding *ngFor="let file of files | filter:'recentlyUploaded':false; index as i; ">
-        <ion-item>
+        <h3>{{ dataService.unprocessedFilesIndexes.length }} files in queue</h3>
+        <button (click)="dataService.startProcessing(true)">Start</button>
+        <button (click)="dataService.stopProcessing()">Stop </button>
+        <wm-files-item *ngFor="let i of dataService.unprocessedFilesIndexes" [file]="files[i]"></wm-files-item>
 
-            <ion-label>
-                <div class="fileInfoBar" [ngClass]="{recentlyUploaded: file.recentlyUploaded, 
-                    loading: !file.complete, 
-                    inPlayer: (file === currentLoadedFile ), 
-                    canBePlayed: file.objectURL,
-                    loaded: file.complete
-                }">
-                    <div class="image">
-                        <img [src]="file.picture" *ngIf="file.picture" [alt]="file.tags.tags.title" />
-                        <ion-icon name="image" *ngIf="!file.picture"></ion-icon>
-                    </div>
-                    <div *ngIf="file.tags" class="tags" (click)="playFile(i)">
-                        <span class="title"><b>{{ file.tags.tags.title }}</b> - {{ file.tags.tags.artist }}</span>
-                        <!-- <span class="sub"><ion-icon name="microphone"></ion-icon>  {{ (file.tags.tags.year) ? file.tags.tags.year : "????" }} </span> -->
-                        <span class="sub"><ion-icon name="disc"></ion-icon> {{ (file.tags.tags.album) ? file.tags.tags.album : ("TDI.UNKNOWN" | translate ) }} </span>
-                        <span class="sub"><ion-icon name="calendar"></ion-icon> {{ (file.tags.tags.year) ? file.tags.tags.year : "????" }} </span>
-                    </div>
-                    <div *ngIf="!file.tags" class="tags" (click)="playFile(i)">
-                        <span class="title">{{file.file.name}}</span>
-                    </div>
-                    <wm-waveform [data]="file.waveform" (click)="playFile(i)"></wm-waveform>
-                    <div class="bpm">
-                        <span class="value" *ngIf="!file.bpm"><ion-spinner></ion-spinner></span>
-                        <span class="value" *ngIf="file.bpm">{{file.bpm.groups[0].tempo}}</span>
-                        <span>BPM</span>
-                    </div>
-                    <div class="recentlyUploaded" *ngIf="file.recentlyUploaded">
-                        <ion-icon name="clock"></ion-icon>
-                    </div>
-                </div>
-            </ion-label>
+        <h3>{{ dataService.processedFilesIndexes.length }} processed files</h3>
+        <wm-files-item *ngFor="let i of dataService.processedFilesIndexes" [file]="files[i]"></wm-files-item>
 
-        </ion-item>
-        <ion-item-options side="end">
-            <ion-item-option (click)="setFavorite(i)">Favorite</ion-item-option>
-            <ion-item-option color="danger" (click)="removeFile(i)">Delete</ion-item-option>
-        </ion-item-options>
-    </ion-item-sliding>
 
-    <!-- <ion-item *ngFor="let file of files; index as i; " (click)="playFile(i)">
+        <!-- <ion-item *ngFor="let file of files; index as i; " (click)="playFile(i)">
         <ion-spinner *ngIf="!file.complete"></ion-spinner>
         <ion-label *ngIf="file.complete">
             <ion-icon slot="start" color="medium" [name]="file.complete ? 'play' : 'infinite'"></ion-icon>
@@ -72,4 +54,5 @@
         <ion-label *ngIf="!file.bpm">Loading...</ion-label>
     </ion-item> -->
 
-</ion-list>
+    </ion-list>
+</ion-content>

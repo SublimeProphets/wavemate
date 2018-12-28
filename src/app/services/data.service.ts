@@ -20,6 +20,7 @@ export class DataService {
 
   // private vars
   private unprocessedFilesIndexes: number[] = [];
+  private processedFilesIndexes: number[] = [];
   private processingFiles: boolean = false; // true if files are being analyzed
   private processingEnabled: boolean = true; // if true, then we can process files
   private nextFileToProcessTimeout: any;
@@ -56,7 +57,7 @@ export class DataService {
       this.audioService.getMediaTags(file).then((tags) => {
       this.files[position - 1].tags = tags;
       // picture
-      const image = file.tags.tags.picture;
+      const image = this.files[position - 1].tags.tags.picture;
       if (image) {
         var base64String = "";
         for (var i = 0; i < image.data.length; i++) {
@@ -64,9 +65,9 @@ export class DataService {
         }
         var base64 = "data:image/jpeg;base64," +
           window.btoa(base64String);
-        file.picture = base64;
+          this.files[position - 1].picture = base64;
       } else {
-        file.picture = null;
+        this.files[position - 1].picture = null;
       }
         // this.processingItemStep$.next({ type: ProcessingSteps.TAGS_CREATED, payload: file } );
     });
@@ -169,8 +170,11 @@ export class DataService {
 
         file.complete = true;
 
-        // remove first index
+        // remove first index && add completed index
         this.unprocessedFilesIndexes.shift();
+        const myIndex = this.files.indexOf(file);
+        this.processedFilesIndexes.push(myIndex);
+
         if (this.unprocessedFilesIndexes.length > 0 && this.processingEnabled) {
           if (this.utilService.settings.processing.delayBetweenFiles > 0) {
             this.nextFileToProcessTimeout = setTimeout(() => {
@@ -187,29 +191,14 @@ export class DataService {
       }
     });
 
+    
+  }
 
-    // /**
-    //  * 
-    //  * @param indexOfFile index of this.files[] to process
-    //  */
-    // private processFile(indexOfFile): Promise<IAnalyzedAudio> {
-    //   return new Promise((resolve, reject) => {
-    //     this.processingFiles = true;
-    //     // not completed yet?
-    //     if (!this.files[indexOfFile].complete) {
-    //       this.audioService.analyzeAll(this.files[indexOfFile].file).then((analyzedAudio) => {
-    //         this.files[indexOfFile] = analyzedAudio;
-    //         this.playerService.processingItemStepFinished$.next(analyzedAudio);
-    //         this.unprocessedFilesIndexes.shift(); // remove first index
-    //         if (this.unprocessedFilesIndexes.length > 0) {
-    //           this.processFile(this.unprocessedFilesIndexes[0])
-    //         } else {
-    //           this.processingFiles = false;
-    //         }
-    //         resolve(this.files[indexOfFile]);
-    //       });
-    //     }
-    //   });
+  public resetFiles() {
+    this.files = [];
+    this.processedFilesIndexes = [];
+    this.unprocessedFilesIndexes = [];
+    clearTimeout(this.nextFileToProcessTimeout);
   }
 
 
